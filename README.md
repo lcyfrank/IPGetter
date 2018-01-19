@@ -5,7 +5,7 @@ Use the *SimplePing* provided by *Apple*.
 
 ### How to use
 
-First step:
+##### First step:
 
 add header file
 
@@ -13,7 +13,7 @@ add header file
 #import "SGIPGetter.h"
 ```
 
-Second step:
+##### Second step:
 
 ```objc
 [[SGIPGetter shared] sg_getDeviceIP:^(NSArray<NSString *> *ips) {
