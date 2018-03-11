@@ -64,17 +64,6 @@
 
 - (void)simplePing:(SimplePing *)pinger didStartWithAddress:(NSData *)address
 {
-    int err;
-    NSString *result = nil;
-    char hostStr[1025];
-    
-    if (address != nil) {
-        err = getnameinfo(address.bytes, (socklen_t) address.length, hostStr, sizeof(hostStr), NULL, 0, 32);
-        if (err == 0) {
-            result = @(hostStr);
-        }
-    }
-    
     for (NSInteger i = 0; i < 5; i++) {
         [self.pinger sendPingWithData:nil];
     }

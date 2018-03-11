@@ -156,6 +156,7 @@ typedef struct ifaddrs _ifaddrs;
             temp_addr = temp_addr->ifa_next;
         }
     }
+    freeifaddrs(interfaces);
     return [ips copy];
 }
 
