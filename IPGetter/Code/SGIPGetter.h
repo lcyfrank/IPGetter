@@ -29,7 +29,7 @@
 
 /**
  the ip getter will cache the IPs just find right now
- call this method before get IPs when change the enviroment of network
+ call this method before get IPs when change the network environment
  */
 - (void)refresh;
 

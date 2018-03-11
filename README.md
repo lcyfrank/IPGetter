@@ -7,7 +7,7 @@ Use the *SimplePing* provided by *Apple*.
 
 ##### First step:
 
-add header file
+add header file.
 
 ```objc
 #import "SGIPGetter.h"
@@ -21,4 +21,18 @@ add header file
 }];
 ```
 
+### Configue timeout
 
+Now you can configue the timeout of each ping operation.
+
+```objc
+[[SGIPGetter shared] configureTimeoutOfEachPing:0.5];
+```
+
+### Refresh
+
+This IPGetter will cache the IPs you got automatically, so call the *refresh* method before you get IPs when network environment has changed.
+
+```objc
+[[SGIPGetter shared] refresh];
+```
