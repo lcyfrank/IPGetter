@@ -20,14 +20,10 @@ typedef struct ifaddrs _ifaddrs;
 @interface SGIPGetter ()
 {
     BOOL _isRefresh;
-    NSInteger _currentIdx;
-    
-    // this bool value is used to transport the result of ping result
-    // shouldn't use this value directly
-    BOOL _connected;
+    NSTimeInterval _timeout;
 }
 
-@property (nonatomic, strong) SGPinger *pinger;
+@property (nonatomic, strong) NSMutableArray <SGPinger *> *pingers;
 @property (nonatomic, strong) NSMutableArray *ipResults;  // contain the bool value of each ip in subnet
 
 @end
@@ -37,6 +33,7 @@ typedef struct ifaddrs _ifaddrs;
 - (instancetype)init
 {
     if (self = [super init]) {
+        _timeout = 0.2;
         _isRefresh = YES;
     }
     return self;
@@ -52,11 +49,15 @@ typedef struct ifaddrs _ifaddrs;
     return getter;
 }
 
+- (void)configureTimeoutOfEachPing:(NSTimeInterval)seconds
+{
+    _timeout = seconds;
+}
+
 - (void)sg_getDeviceIP:(void (^)(NSArray<NSString *> *))handler
 {
     if (_isRefresh) {
-        _currentIdx = 0;
-        
+        _isRefresh = NO;
         NSArray *_ips = [self getAllNetIps];
         
         NSUInteger ip_count = _ips.count;
@@ -64,20 +65,22 @@ typedef struct ifaddrs _ifaddrs;
             handler(@[]);
             return;
         }
-        _ipResults = [NSMutableArray arrayWithCapacity:ip_count];
         
-        for (NSString *ip in _ips) {
-            self.pinger = [SGPinger pingerWithHostName:ip];
-            [self.pinger pingWithResult:^(BOOL isSuccess) {
-                _currentIdx++;
+        _ipResults = [NSMutableArray arrayWithCapacity:ip_count];
+        _pingers = [NSMutableArray arrayWithCapacity:ip_count];
+        [_ips enumerateObjectsUsingBlock:^(NSString * _Nonnull ip, NSUInteger idx, BOOL * _Nonnull stop) {
+            SGPinger *pinger = [SGPinger pingerWithHostName:ip];
+            [pinger pingWithResult:^(BOOL isSuccess) {
                 if (isSuccess) {
                     [_ipResults addObject:ip];
                 }
-                if (_currentIdx == ip_count) {
+                if (idx + 1 == ip_count) {
                     handler(_ipResults);
+                    [_pingers removeAllObjects];
                 }
-            } timeOut:200];
-        }
+            } timeOut:(unsigned int)(_timeout * 1000)];
+            _pingers[idx] = pinger;
+        }];
     } else {
         handler(_ipResults);
     }
@@ -119,6 +122,7 @@ typedef struct ifaddrs _ifaddrs;
                     
                     __block NSInteger ip_min = 0;
                     __block NSInteger ip_max = 0;
+                    // enumerate 4 segments of IP
                     [netmasks enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         NSInteger temp_segment_netmask = [obj integerValue];
                         NSInteger temp_segment_host = [hosts[idx] integerValue];
@@ -139,7 +143,7 @@ typedef struct ifaddrs _ifaddrs;
                         }
                     }];
                     
-                    for (NSInteger ip = ip_min; ip <= ip_max; ip++) {
+                    for (NSInteger ip = ip_min; ip <= ip_max - 1; ip++) {
                         NSInteger ip_1 = ip >> 24;
                         NSInteger ip_2 = (ip - (ip_1 << 24)) >> 16;
                         NSInteger ip_3 = (ip - (ip_1 << 24) - (ip_2 << 16)) >> 8;
@@ -153,6 +157,28 @@ typedef struct ifaddrs _ifaddrs;
         }
     }
     return [ips copy];
+}
+
+- (NSArray <NSString *> *)sg_getAvailableInterfacesName
+{
+    _ifaddrs *interfaces = NULL;
+    _ifaddrs *tempInterface = NULL;
+    
+    NSInteger success = getifaddrs(&interfaces);
+    
+    NSMutableArray *availableInterfaces = [NSMutableArray array];
+    if (success == 0) {
+        tempInterface = interfaces;
+        while (tempInterface) {
+            if (tempInterface->ifa_addr->sa_family == AF_INET ||
+                tempInterface->ifa_addr->sa_family == AF_INET6) {
+                NSString *ifName = [NSString stringWithUTF8String:tempInterface->ifa_name];
+                [availableInterfaces addObject:ifName];
+            }
+            tempInterface = tempInterface->ifa_next;
+        }
+    }
+    return [availableInterfaces copy];
 }
 
 - (void)refresh

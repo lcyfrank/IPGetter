@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE464D89204F780100391E41 /* NSString+Test.m in Sources */ = {isa = PBXBuildFile; fileRef = BE464D88204F780100391E41 /* NSString+Test.m */; };
 		BE78965C201214B70012F429 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE78965B201214B70012F429 /* AppDelegate.m */; };
 		BE78965F201214B70012F429 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE78965E201214B70012F429 /* ViewController.m */; };
 		BE789662201214B70012F429 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE789660201214B70012F429 /* Main.storyboard */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE464D87204F780100391E41 /* NSString+Test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Test.h"; sourceTree = "<group>"; };
+		BE464D88204F780100391E41 /* NSString+Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Test.m"; sourceTree = "<group>"; };
 		BE789657201214B70012F429 /* IPGetter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IPGetter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE78965A201214B70012F429 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BE78965B201214B70012F429 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 				BE789665201214B70012F429 /* LaunchScreen.storyboard */,
 				BE789668201214B70012F429 /* Info.plist */,
 				BE789669201214B70012F429 /* main.m */,
+				BE464D87204F780100391E41 /* NSString+Test.h */,
+				BE464D88204F780100391E41 /* NSString+Test.m */,
 			);
 			path = IPGetter;
 			sourceTree = "<group>";
@@ -167,6 +172,7 @@
 			files = (
 				BE78967A201215E80012F429 /* SGIPGetter.m in Sources */,
 				BE789679201215E80012F429 /* SGPinger.m in Sources */,
+				BE464D89204F780100391E41 /* NSString+Test.m in Sources */,
 				BE78965F201214B70012F429 /* ViewController.m in Sources */,
 				BE78967B201215E80012F429 /* SimplePing.m in Sources */,
 				BE78966A201214B70012F429 /* main.m in Sources */,
@@ -305,6 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 39L73ZT629;
 				INFOPLIST_FILE = IPGetter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.icephone.IPGetter;
@@ -318,6 +325,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 39L73ZT629;
 				INFOPLIST_FILE = IPGetter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cn.icephone.IPGetter;

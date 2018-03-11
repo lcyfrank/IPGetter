@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "SGIPGetter.h"
+#import "NSString+Test.h"
+
+#define kHeaderMask @"ffd8"
 
 @interface ViewController ()
 
@@ -17,18 +20,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
 
+    // config each ping timeout
+    // default is 0.2 second
+    [[SGIPGetter shared] configureTimeoutOfEachPing:0.5];
+    
+    // get all IPs operation
     [[SGIPGetter shared] sg_getDeviceIP:^(NSArray<NSString *> *ips) {
         NSLog(@"%@", ips);
     }];
+
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end

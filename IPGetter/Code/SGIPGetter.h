@@ -10,9 +10,31 @@
 
 @interface SGIPGetter : NSObject
 
+
+/**
+ get singleton instance
+ */
 + (instancetype)shared;
 
-- (void)refresh;
+/**
+ get all connectable IPs of current device and hotpost
+ */
 - (void)sg_getDeviceIP:(void (^)(NSArray <NSString *>*ips))handler;
+
+/**
+ configure the time out of each ping operation
+ default is 0.2 second
+ */
+- (void)configureTimeoutOfEachPing:(NSTimeInterval)seconds;
+
+/**
+ the ip getter will cache the IPs just find right now
+ call this method before get IPs when change the enviroment of network
+ */
+- (void)refresh;
+
+- (NSArray <NSString *> *)sg_getAvailableInterfacesName;
+
+
 
 @end

@@ -12,6 +12,7 @@
 
 @interface SGPinger () <SimplePingDelegate> {
     BOOL _connected;
+    NSString *_hostName;
 }
 
 @property (nonatomic, strong) SimplePing *pinger;
@@ -30,6 +31,7 @@
 - (instancetype)initWithHostName:(NSString *)hostName
 {
     if (self = [super init]) {
+        _hostName = hostName;
         _connected = NO;
         self.pinger = [[SimplePing alloc] initWithHostName:hostName];
         self.pinger.addressStyle = SimplePingAddressStyleICMPv4;
@@ -40,10 +42,15 @@
 
 - (void)pingWithResult:(void (^)(BOOL isSuccess))result timeOut:(unsigned int)time
 {
-    self.resultBlock = [result copy];
+    self.resultBlock = result;
     [self.pinger start];
+    
+    typeof(self) __weak weakSelf = self;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:time / 1000.0 repeats:NO block:^(NSTimer * _Nonnull timer) {
-        [self timerScheduled];
+        typeof(self) __strong strongSelf = weakSelf;
+        if (strongSelf) {
+            [strongSelf timerScheduled];
+        }
     }];
 }
 
@@ -51,7 +58,6 @@
 - (void)simplePing:(SimplePing *)pinger didFailWithError:(NSError *)error
 {
     if (error) {
-//        NSLog(@"send ping error. [%@]", [error localizedDescription]);
         [self stop];
     }
 }
@@ -69,7 +75,6 @@
         }
     }
     
-//    NSLog(@"PING %@", result);
     for (NSInteger i = 0; i < 5; i++) {
         [self.pinger sendPingWithData:nil];
     }
