@@ -26,7 +26,7 @@ add header file.
 Now you can configue the timeout of each ping operation.
 
 ```objc
-[[SGIPGetter shared] configureTimeoutOfEachPing:0.5];
+[[SGIPGetter shared] configueTimeoutOfEachPing:0.5];
 ```
 
 ### Refresh

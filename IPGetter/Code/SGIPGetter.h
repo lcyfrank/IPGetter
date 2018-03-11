@@ -25,7 +25,7 @@
  configure the time out of each ping operation
  default is 0.2 second
  */
-- (void)configureTimeoutOfEachPing:(NSTimeInterval)seconds;
+- (void)configueTimeoutOfEachPing:(NSTimeInterval)seconds;
 
 /**
  the ip getter will cache the IPs just find right now

@@ -49,7 +49,7 @@ typedef struct ifaddrs _ifaddrs;
     return getter;
 }
 
-- (void)configureTimeoutOfEachPing:(NSTimeInterval)seconds
+- (void)configueTimeoutOfEachPing:(NSTimeInterval)seconds
 {
     _timeout = seconds;
 }
