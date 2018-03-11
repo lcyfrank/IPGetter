@@ -21,9 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    // config each ping timeout
+    // configure each ping timeout
     // default is 0.2 second
-    [[SGIPGetter shared] configueTimeoutOfEachPing:0.5];
+    [[SGIPGetter shared] configureTimeoutOfEachPing:0.5];
     
     // get all IPs operation
     [[SGIPGetter shared] sg_getDeviceIP:^(NSArray<NSString *> *ips) {

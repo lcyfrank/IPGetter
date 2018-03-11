@@ -21,12 +21,12 @@ add header file.
 }];
 ```
 
-### Configue timeout
+### Configure timeout
 
-Now you can configue the timeout of each ping operation.
+Now you can configure the timeout of each ping operation.
 
 ```objc
-[[SGIPGetter shared] configueTimeoutOfEachPing:0.5];
+[[SGIPGetter shared] configureTimeoutOfEachPing:0.5];
 ```
 
 ### Refresh
