@@ -30,24 +30,37 @@ typedef struct ifaddrs _ifaddrs;
 
 @implementation SGIPGetter
 
+static SGIPGetter *_getter;
+
+#pragma mark - singleton
+
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _getter = [super allocWithZone:zone];
+    });
+    return _getter;
+}
+
 - (instancetype)init
 {
-    if (self = [super init]) {
-        _timeout = 0.2;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _getter = [super init];
         _isRefresh = YES;
-    }
-    return self;
+        _timeout = 0.2;
+    });
+    return _getter;
 }
 
 + (instancetype)shared
 {
-    static SGIPGetter *getter = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        getter = [[SGIPGetter alloc] init];
-    });
-    return getter;
+    return [[self alloc] init];
 }
+
+
+#pragma mark - configuration
 
 - (void)configureTimeoutOfEachPing:(NSTimeInterval)seconds
 {
