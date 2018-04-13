@@ -81,16 +81,22 @@ static SGIPGetter *_getter;
         
         _ipResults = [NSMutableArray arrayWithCapacity:ip_count];
         _pingers = [NSMutableArray arrayWithCapacity:ip_count];
+        __block NSUInteger count = 0;
+        
+        NSLock *lock = [[NSLock alloc] init];
         [_ips enumerateObjectsUsingBlock:^(NSString * _Nonnull ip, NSUInteger idx, BOOL * _Nonnull stop) {
             SGPinger *pinger = [SGPinger pingerWithHostName:ip];
             [pinger pingWithResult:^(BOOL isSuccess) {
                 if (isSuccess) {
                     [_ipResults addObject:ip];
                 }
-                if (idx + 1 == ip_count) {
+                [lock lock];
+                count += 1;
+                if (count == ip_count) {
                     handler(_ipResults);
                     [_pingers removeAllObjects];
                 }
+                [lock unlock];
             } timeOut:(unsigned int)(_timeout * 1000)];
             _pingers[idx] = pinger;
         }];
